@@ -4,7 +4,7 @@
 #   2. 编辑 .env，至少把 API_SECRET_KEY 换成你自己的随机串
 #   3. docker compose up -d
 #
-# 更新：按发布说明设置 OVH_IMAGE 为已验证镜像，再 docker compose pull && docker compose up -d
+# 更新：如需使用其他版本，按发布说明设置 OVH_IMAGE，再运行 docker compose pull && docker compose up -d
 # 日志： docker compose logs -f
 # 停止： docker compose down          （数据留在 ./data，不会丢）
 #
@@ -13,8 +13,8 @@
 
 services:
   ovh-console:
-    # 兼容已有部署的上游镜像。本仓镜像通过 OVH_IMAGE 显式选择。
-    image: ${OVH_IMAGE:-ghcr.io/luodaoyi/ovh:0.4.38}
+    # 默认使用本仓 v0.4.39 的固定摘要。可用 OVH_IMAGE 指定其他镜像。
+    image: ${OVH_IMAGE:-ghcr.io/rocky-jay/ovh:0.4.39@sha256:e8c0b81ea84520437854bfc6ee75ea6f721b17199a5eb16f1638f56bc35a49e3}
     container_name: ovh-console
     restart: unless-stopped
 

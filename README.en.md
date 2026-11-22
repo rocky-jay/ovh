@@ -24,7 +24,7 @@ Performance: [prebuilt carts, connection warming and dispatch measurements](docs
 
 ## Download
 
-Download stable builds from [rocky-jay/ovh Releases](https://github.com/rocky-jay/ovh/releases). Verify binaries against the release's `checksums.txt` and use the documented digest for the `ghcr.io/rocky-jay/ovh` image. Until the first fork release is available, you can build the standalone binary from source below. Replace an installed upstream binary once to adopt this fork's default update source.
+Download stable builds from [rocky-jay/ovh Releases](https://github.com/rocky-jay/ovh/releases). Verify binaries against the release's `checksums.txt` and use the documented digest for the `ghcr.io/rocky-jay/ovh` image. You can also build the standalone binary from source below. Replace an installed upstream binary once to adopt this fork's default update source.
 
 ## Order payment and stopping purchases
 
@@ -102,7 +102,7 @@ See [server/README.md](server/README.md) for detailed backend documentation.
 
 ### Option A: Docker
 
-When `OVH_IMAGE` is unset, `docker-compose.yml` uses the existing upstream image `ghcr.io/luodaoyi/ovh:0.4.38`. To use a fork image, set `OVH_IMAGE` to `ghcr.io/rocky-jay/ovh@sha256:…` with the digest from the release notes. Back up the data and corresponding encryption key, then confirm mounts and automatic ordering state before running `docker compose pull && docker compose up -d`.
+When `OVH_IMAGE` is unset or empty, `docker-compose.yml` uses this fork's `v0.4.39` image pinned by its SHA-256 digest. To use a different image, set `OVH_IMAGE` in `.env` to the full image reference, such as `ghcr.io/rocky-jay/ovh@sha256:…` with the digest from the release notes. Back up the data and corresponding encryption key, then confirm mounts and automatic ordering state before running `docker compose pull && docker compose up -d`. [v0.4.39 release](https://github.com/rocky-jay/ovh/releases/tag/v0.4.39)
 
 **All data lives under the single `/data` directory**: the SQLite database, the **database encryption key** (`.env`), caches, and logs. Back up that directory and you have everything.
 

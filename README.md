@@ -26,7 +26,7 @@ OVH 独立服务器 / VPS / Eco 系列**抢购 + 监控 + 管理**控制台。
 
 ## 下载
 
-本仓的正式版本从 [rocky-jay/ovh Releases](https://github.com/rocky-jay/ovh/releases) 下载，二进制用同页的 `checksums.txt` 核对 SHA-256，容器使用发布页列出的 `ghcr.io/rocky-jay/ovh` 镜像摘要。首个正式版本发布前，可按下文从源码构建单文件。已安装的上游二进制需手动替换一次，才会使用本仓的默认更新源。
+本仓的正式版本从 [rocky-jay/ovh Releases](https://github.com/rocky-jay/ovh/releases) 下载，二进制用同页的 `checksums.txt` 核对 SHA-256，容器使用发布页列出的 `ghcr.io/rocky-jay/ovh` 镜像摘要。也可按下文从源码构建单文件。已安装的上游二进制需手动替换一次，才会使用本仓的默认更新源。
 
 ## 订单付款与停止抢购
 
@@ -104,7 +104,7 @@ OVH 独立服务器 / VPS / Eco 系列**抢购 + 监控 + 管理**控制台。
 
 ### 方式 A：Docker
 
-`docker-compose.yml` 在未填写 `OVH_IMAGE` 时使用已有的上游镜像 `ghcr.io/luodaoyi/ovh:0.4.38`。使用本仓发布的镜像时，把 `OVH_IMAGE` 设为 `ghcr.io/rocky-jay/ovh@sha256:…`，摘要以发布页为准。备份数据和配套加密密钥、核对挂载及自动下单状态后，再运行 `docker compose pull && docker compose up -d`。
+`OVH_IMAGE` 未设置或为空时，`docker-compose.yml` 默认使用本仓 `v0.4.39` 镜像，并按 SHA-256 摘要固定。使用其他镜像时，在 `.env` 中将 `OVH_IMAGE` 设为完整镜像引用，例如 `ghcr.io/rocky-jay/ovh@sha256:…`，摘要以发布页为准。备份数据和配套加密密钥、核对挂载及自动下单状态后，再运行 `docker compose pull && docker compose up -d`。 [v0.4.39 发布页](https://github.com/rocky-jay/ovh/releases/tag/v0.4.39)
 
 **数据全在 `/data` 这一个目录下**:SQLite 数据库、**数据库加密密钥**(`.env`)、缓存、日志。备份就备份这个目录。
 
