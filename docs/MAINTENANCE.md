@@ -2,7 +2,7 @@
 
 - 来源 / Origin: [gokele/ovh](https://github.com/gokele/ovh), archived. The fork baseline is `025ac9629db0f50dae3133175fa8b6107564ecb3` (`VERSION=0.4.37`); this is a source baseline, not a release of this fork.
 - 许可证 / License: the original history and [AGPL-3.0 text](../LICENSE) remain in place. This community fork is not affiliated with OVHcloud.
-- 发布 / Releases: [luodaoyi/ovh Releases](https://github.com/luodaoyi/ovh/releases). No fork artifact or migration is endorsed by this documentation change.
+- 本仓 / Current fork: [rocky-jay/ovh](https://github.com/rocky-jay/ovh) is based on [luodaoyi/ovh](https://github.com/luodaoyi/ovh). New standalone builds check [rocky-jay/ovh Releases](https://github.com/rocky-jay/ovh/releases) by default. `OVH_UPDATE_API` remains an explicit override.
 
 ## 首个自有版本的验收 / Before the first fork release
 

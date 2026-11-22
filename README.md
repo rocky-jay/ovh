@@ -12,7 +12,7 @@
 ## 原作者与贡献
 
 - **原作者：[可乐（gokele）](https://github.com/gokele)**，原项目：[gokele/ovh](https://github.com/gokele/ovh)（已归档）。现有项目的主体设计和功能来自可乐与上游贡献者，感谢他们的开发和维护。原有贡献记录仍可在本仓库的 [Git 历史](https://github.com/luodaoyi/ovh/commits/025ac9629db0f50dae3133175fa8b6107564ecb3/)中查看。
-- **接手维护：[luodaoyi/ovh](https://github.com/luodaoyi/ovh)**。本仓只负责后续维护、更新与发布，不改变原作者归属；保留原作者历史与 [AGPL-3.0 许可证](LICENSE)。这是社区项目，与 OVHcloud 官方无关。见[维护说明](docs/MAINTENANCE.md)。
+- **上游维护：[luodaoyi/ovh](https://github.com/luodaoyi/ovh)**。本仓 [rocky-jay/ovh](https://github.com/rocky-jay/ovh) 基于该项目，保留贡献历史和 [AGPL-3.0 许可证](LICENSE)。这是社区项目，与 OVHcloud 官方无关。见[维护说明](docs/MAINTENANCE.md)。
 
 OVH 独立服务器 / VPS / Eco 系列**抢购 + 监控 + 管理**控制台。
 
@@ -26,7 +26,7 @@ OVH 独立服务器 / VPS / Eco 系列**抢购 + 监控 + 管理**控制台。
 
 ## 下载
 
-从 [luodaoyi/ovh Releases](https://github.com/luodaoyi/ovh/releases) 选择已公开的正式版本，按平台下载二进制，并用同页的 `checksums.txt` 核对 SHA-256。容器镜像使用该发布页列出的 `ghcr.io/luodaoyi/ovh` 版本标签或 digest。不要把旧上游产物当成本仓发布。
+本仓的正式版本从 [rocky-jay/ovh Releases](https://github.com/rocky-jay/ovh/releases) 下载，二进制用同页的 `checksums.txt` 核对 SHA-256，容器使用发布页列出的 `ghcr.io/rocky-jay/ovh` 镜像摘要。首个正式版本发布前，可按下文从源码构建单文件。已安装的上游二进制需手动替换一次，才会使用本仓的默认更新源。
 
 ## 订单付款与停止抢购
 
@@ -104,7 +104,7 @@ OVH 独立服务器 / VPS / Eco 系列**抢购 + 监控 + 管理**控制台。
 
 ### 方式 A：Docker
 
-本仓 `docker-compose.yml` 默认使用自己的版本镜像。升级时先按发布说明设置 `OVH_IMAGE`，备份数据和配套加密密钥、核对挂载及自动下单状态后，再运行 `docker compose pull && docker compose up -d`。不要直接覆盖已有实例的配置。
+`docker-compose.yml` 在未填写 `OVH_IMAGE` 时使用已有的上游镜像 `ghcr.io/luodaoyi/ovh:0.4.38`。使用本仓发布的镜像时，把 `OVH_IMAGE` 设为 `ghcr.io/rocky-jay/ovh@sha256:…`，摘要以发布页为准。备份数据和配套加密密钥、核对挂载及自动下单状态后，再运行 `docker compose pull && docker compose up -d`。
 
 **数据全在 `/data` 这一个目录下**:SQLite 数据库、**数据库加密密钥**(`.env`)、缓存、日志。备份就备份这个目录。
 

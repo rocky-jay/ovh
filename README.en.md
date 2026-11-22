@@ -12,7 +12,7 @@
 ## Original author and contributors
 
 - **Original author: [Cola (可乐 / gokele)](https://github.com/gokele)**. The original project is [gokele/ovh](https://github.com/gokele/ovh), now archived. Cola and the upstream contributors built and maintained the original design and features. Their work remains in the [Git history](https://github.com/luodaoyi/ovh/commits/025ac9629db0f50dae3133175fa8b6107564ecb3/).
-- **Ongoing maintenance: [luodaoyi/ovh](https://github.com/luodaoyi/ovh)**. This fork takes responsibility for future maintenance, updates, and releases without changing authorship. It preserves the original history and [AGPL-3.0 license](LICENSE). It is a community project, not affiliated with OVHcloud. See the [maintenance notes](docs/MAINTENANCE.md).
+- **Upstream maintenance by [luodaoyi/ovh](https://github.com/luodaoyi/ovh)**. [rocky-jay/ovh](https://github.com/rocky-jay/ovh) forks that project and preserves the contribution history and [AGPL-3.0 license](LICENSE). It is a community project with no OVHcloud affiliation. See the [maintenance notes](docs/MAINTENANCE.md).
 
 A **sniping + monitoring + management** console for OVH bare-metal servers / VPS / Eco lines.
 
@@ -24,7 +24,7 @@ Performance: [prebuilt carts, connection warming and dispatch measurements](docs
 
 ## Download
 
-Choose a published stable version in [luodaoyi/ovh Releases](https://github.com/luodaoyi/ovh/releases), download the matching binary and verify its SHA-256 against `checksums.txt` on the release page. For containers, use the version tag or digest for `ghcr.io/luodaoyi/ovh` documented there. Upstream artifacts are not fork releases.
+Download stable builds from [rocky-jay/ovh Releases](https://github.com/rocky-jay/ovh/releases). Verify binaries against the release's `checksums.txt` and use the documented digest for the `ghcr.io/rocky-jay/ovh` image. Until the first fork release is available, you can build the standalone binary from source below. Replace an installed upstream binary once to adopt this fork's default update source.
 
 ## Order payment and stopping purchases
 
@@ -102,7 +102,7 @@ See [server/README.md](server/README.md) for detailed backend documentation.
 
 ### Option A: Docker
 
-The fork's `docker-compose.yml` uses its own versioned image by default. To upgrade, set `OVH_IMAGE` according to the release notes, back up the data and corresponding encryption key, and confirm mounts and automatic ordering state before running `docker compose pull && docker compose up -d`. Do not overwrite an existing installation's configuration.
+When `OVH_IMAGE` is unset, `docker-compose.yml` uses the existing upstream image `ghcr.io/luodaoyi/ovh:0.4.38`. To use a fork image, set `OVH_IMAGE` to `ghcr.io/rocky-jay/ovh@sha256:…` with the digest from the release notes. Back up the data and corresponding encryption key, then confirm mounts and automatic ordering state before running `docker compose pull && docker compose up -d`.
 
 **All data lives under the single `/data` directory**: the SQLite database, the **database encryption key** (`.env`), caches, and logs. Back up that directory and you have everything.
 

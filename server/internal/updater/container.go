@@ -49,7 +49,7 @@ const ContainerUpdateHint = "检测到运行在容器里，自更新已停用。
 	"按发布说明将 OVH_IMAGE 设置为本仓已验证的版本，再拉新镜像并重建容器：\n" +
 	"  docker compose pull && docker compose up -d\n" +
 	"或者：\n" +
-	"  docker pull ghcr.io/luodaoyi/ovh:<version>\n" +
+	"  docker pull ghcr.io/" + Repo + ":<version>\n" +
 	"  按原挂载配置重建容器，先备份数据与配套密钥。\n\n" +
 	"数据在挂载的卷上，重建容器不会丢。\n\n" +
 	"为什么不能在容器里自更新：新二进制只会写进容器的可写层，" +

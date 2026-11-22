@@ -38,7 +38,7 @@ import (
 
 const (
 	// Repo 维护仓库,与 handlers 里的检查逻辑保持一致
-	Repo = "luodaoyi/ovh"
+	Repo = "rocky-jay/ovh"
 	// UserAgent GitHub API 要求带 UA
 	UserAgent = "OVH-Console-Updater"
 	// ChecksumAsset 校验和文件名(发布工作流生成并上传)

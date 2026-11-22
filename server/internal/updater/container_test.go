@@ -32,7 +32,7 @@ func TestInContainerEnvFlag(t *testing.T) {
 
 // 更新指引必须把"为什么"说清楚，否则用户只会觉得功能坏了。
 func TestContainerUpdateHintIsActionable(t *testing.T) {
-	for _, must := range []string{"docker compose pull", "docker pull", "ghcr.io/luodaoyi/ovh:", "卷", "可写层"} {
+	for _, must := range []string{"docker compose pull", "docker pull", "ghcr.io/rocky-jay/ovh:", "卷", "可写层"} {
 		if !contains(ContainerUpdateHint, must) {
 			t.Errorf("更新指引里缺少 %q", must)
 		}

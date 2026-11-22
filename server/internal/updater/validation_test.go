@@ -9,9 +9,9 @@ import (
 	"testing"
 )
 
-func TestReleaseSourceDefaultsToMaintainedRepository(t *testing.T) {
+func TestReleaseSourceDefaultsToThisRepository(t *testing.T) {
 	t.Setenv("OVH_UPDATE_API", "")
-	if got := LatestReleaseURL(); got != "https://api.github.com/repos/luodaoyi/ovh/releases/latest" {
+	if got := LatestReleaseURL(); got != "https://api.github.com/repos/rocky-jay/ovh/releases/latest" {
 		t.Fatalf("unexpected default release source: %s", got)
 	}
 }

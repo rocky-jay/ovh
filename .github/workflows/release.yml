@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   gate:
-    if: github.repository == 'luodaoyi/ovh' && github.ref == 'refs/heads/main'
+    if: github.repository == 'rocky-jay/ovh' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
@@ -94,7 +94,7 @@ jobs:
       contents: read
       packages: write
     env:
-      IMAGE: ghcr.io/luodaoyi/ovh
+      IMAGE: ghcr.io/${{ github.repository }}
       VERSION: ${{ needs.gate.outputs.version }}
     outputs:
       digest: ${{ steps.build.outputs.digest }}
@@ -145,10 +145,10 @@ jobs:
         run: |
           set -euo pipefail
           status=unverified
-          if token="$(curl -fsS --max-time 15 'https://ghcr.io/token?service=ghcr.io&scope=repository:luodaoyi/ovh:pull' | jq -er .token)" &&
+          if token="$(curl -fsS --max-time 15 "https://ghcr.io/token?service=ghcr.io&scope=repository:$GITHUB_REPOSITORY:pull" | jq -er .token)" &&
              headers="$(curl -fsSI --max-time 15 -H "Authorization: Bearer $token" \
                -H 'Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.list.v2+json' \
-               "https://ghcr.io/v2/luodaoyi/ovh/manifests/$VERSION")" &&
+               "https://ghcr.io/v2/$GITHUB_REPOSITORY/manifests/$VERSION")" &&
              [[ "$(tr -d '\r' <<< "$headers" | awk 'tolower($1) == "docker-content-digest:" {print $2; exit}')" == "$DIGEST" ]]; then
             status=verified
           fi
@@ -190,24 +190,23 @@ jobs:
             jq -es --arg tag "$TAG" 'all(.[][]; .tag_name != $tag)'
           notes="$RUNNER_TEMP/release-notes.md"
           {
-            if [[ "$VERSION" == 0.4.38 ]]; then
-              printf '%s\n\n' '## First stable release of the luodaoyi/ovh fork' \
-                'Original author: [Cola (可乐 / gokele)](https://github.com/gokele), with the contributors to [gokele/ovh](https://github.com/gokele/ovh). This fork continues maintenance and preserves their work and the AGPL-3.0 license.' \
-                'The application checks this fork for updates. Install this release manually when moving from an upstream build; its updater will not automatically switch to this fork.'
-            fi
             printf '%s\n' '## Downloads' \
               'Standalone binaries with bundled web UI are available for Linux amd64/arm64 and Windows amd64. Verify each download against `checksums.txt`.'
-            printf '\nContainer: `ghcr.io/luodaoyi/ovh:%s` (`%s`), linux/amd64 and linux/arm64.\n' "$VERSION" "$IMAGE_DIGEST"
+            printf '\nContainer: `ghcr.io/%s:%s` (`ghcr.io/%s@%s`), linux/amd64 and linux/arm64.\n' \
+              "$GITHUB_REPOSITORY" "$VERSION" "$GITHUB_REPOSITORY" "$IMAGE_DIGEST"
             if [[ "$ANONYMOUS_PULL" != verified ]]; then
               printf '%s\n' 'Anonymous registry access was not verified; an authorized GHCR login may be required.'
             fi
             printf '\n%s\n' 'Back up the existing data directory and encryption configuration before migrating. Publication does not deploy or change an existing installation.'
           } > "$notes"
-          gh release create "$TAG" dist/* --repo "$GITHUB_REPOSITORY" \
-            --draft --target "$GITHUB_SHA" --title "$TAG" --notes-file "$notes"
-          release_id="$(gh api --paginate "repos/$GITHUB_REPOSITORY/releases?per_page=100" |
-            jq -ers --arg tag "$TAG" '[.[][] | select(.tag_name == $tag and .draft)] | if length == 1 then .[0].id else error("unique draft not found") end')"
+          release_id="$(gh api --method POST "repos/$GITHUB_REPOSITORY/releases" \
+            -f tag_name="$TAG" -f target_commitish="$GITHUB_SHA" -f name="$TAG" \
+            -F body=@"$notes" -F draft=true --jq .id)"
           [[ "$release_id" =~ ^[0-9]+$ ]]
+          for path in dist/*; do
+            gh api --method POST "https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$release_id/assets?name=${path##*/}" \
+              -H 'Content-Type: application/octet-stream' --input "$path" --silent
+          done
           remote="$(gh api "repos/$GITHUB_REPOSITORY/releases/$release_id")"
           jq -e --arg tag "$TAG" --arg sha "$GITHUB_SHA" '.draft and (.prerelease | not) and .tag_name == $tag and .target_commitish == $sha and ([.assets[] | select(.state == "uploaded" and .size > 0) | .name] | sort) == ["checksums.txt","ovh-server-linux-amd64","ovh-server-linux-arm64","ovh-server-windows-amd64.exe"]' <<< "$remote"
           for path in dist/*; do
